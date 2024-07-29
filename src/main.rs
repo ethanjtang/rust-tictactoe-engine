@@ -2,20 +2,26 @@ mod ttt_board;
 
 use ttt_board::{Mark, Board};
 use crate::Mark::N;
+use crate::Mark::O;
+use crate::Mark::X;
 
 fn main() {
 
-    println!("Creating board...");
+    println!("start");
 
     let test_board = Board {
         board: [N, N, N, N, N, N, N, N, N]
     };
 
-    println!("Board successfully created!");
-
-    println!("Printing board...");
+    let test_board2 = Board {
+        board: [X, X, O, O, X, X, X, X, X]
+    };
 
     test_board.print_board();
+    println!("Board is full: {}", test_board.board_full());
 
-    println!("Board finished printing!");
+    test_board2.print_board();
+    println!("Board is full: {}", test_board2.board_full());
+
+    println!("end");
 }
