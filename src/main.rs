@@ -18,10 +18,10 @@ fn main() {
     };
 
     test_board.print_board();
-    println!("Board is full: {}", test_board.board_full());
+    println!("Board is full: {}", test_board.is_board_full());
 
     test_board2.print_board();
-    println!("Board is full: {}", test_board2.board_full());
+    println!("Board is full: {}", test_board2.is_board_full());
 
     println!("end");
 }
