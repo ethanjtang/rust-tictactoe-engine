@@ -9,7 +9,7 @@ fn main() {
 
     println!("start");
 
-    let test_board = Board {
+    let mut test_board = Board {
         board: [N, N, N, N, N, N, N, N, N]
     };
 
@@ -22,6 +22,11 @@ fn main() {
 
     test_board2.print_board();
     println!("Board is full: {}", test_board2.is_board_full());
+
+    println!("Adding mark to empty board");
+    let boolean = test_board.add_mark(0, Mark::O);
+    println!("Mark was added succuessfully: {boolean}");
+    test_board.print_board();
 
     println!("end");
 }

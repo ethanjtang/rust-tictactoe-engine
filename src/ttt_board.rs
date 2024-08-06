@@ -40,4 +40,21 @@ impl Board {
         }
         return true;
     }
+    pub fn add_mark(&mut self, pos: usize, mark: Mark) -> bool
+    {
+        let mut mark_added = false;
+
+        if pos >= 9
+        {
+            return false;
+        }
+        
+        if self.board[pos] == Mark::N
+        {
+            self.board[pos] = mark;
+            mark_added = true;
+        }
+
+        return mark_added;
+    }
 }
