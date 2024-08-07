@@ -21,7 +21,15 @@ impl Board {
         {
             for j in 0..3
             {
-                print!("{:?}", self.board[i][j]);
+                if j == 2
+                {
+                    print!("{:?}\n", self.board[i][j]);
+                }
+                else
+                {
+                    print!("{:?} | ", self.board[i][j]);
+                }
+                
             }    
         }
 
