@@ -10,11 +10,11 @@ fn main() {
     println!("start");
 
     let mut test_board = Board {
-        board: [N, N, N, N, N, N, N, N, N]
+        board: [[N, N, N], [N, N, N], [N, N, N]]
     };
 
     let test_board2 = Board {
-        board: [X, X, O, O, X, X, X, X, X]
+        board: [[X, X, X], [N, N, N], [N, N, N]]
     };
 
     test_board.print_board();
@@ -27,6 +27,8 @@ fn main() {
     let boolean = test_board.add_mark(0, Mark::O);
     println!("Mark was added succuessfully: {boolean}");
     test_board.print_board();
+
+    println!("Test board 2 is valid: {}, eval: {}", test_board2.evaluate_board().0, test_board2.evaluate_board().1);
 
     println!("end");
 }
