@@ -89,8 +89,49 @@ impl Board {
         }
 
         // Checking vertical
+        for column in 0..3
+        {
+            if self.board[0][column] == Mark::X && self.board[0][column] == self.board[1][column] && self.board[1][column] == self.board[2][column]
+            {
+                num_scores += 1;
+                eval += 10;
+            }
+
+            if self.board[0][column] == Mark::O && self.board[0][column] == self.board[1][column] && self.board[1][column] == self.board[2][column]
+            {
+                num_scores += 1;
+                eval -= 10;
+            }
+        }
 
         // Checking diagonals
+
+        // neg slope diag
+        if self.board[0][0] == Mark::X && self.board[0][0] == self.board[1][1] && self.board[1][1] == self.board[2][2]
+        {
+            num_scores += 1;
+            eval += 10;
+        }
+
+        if self.board[0][0] == Mark::O && self.board[0][0] == self.board[1][1] && self.board[1][1] == self.board[2][2]
+        {
+            num_scores += 1;
+            eval -= 10;
+        }
+
+        // second diag
+        if self.board[2][0] == Mark::X && self.board[2][0] == self.board[1][1] && self.board[1][1] == self.board[0][2]
+        {
+            num_scores += 1;
+            eval += 10;
+        }
+
+        if self.board[2][0] == Mark::O && self.board[2][0] == self.board[1][1] && self.board[1][1] == self.board[0][2]
+        {
+            num_scores += 1;
+            eval -= 10;
+        }
+
 
         if num_scores >= 0 && num_scores <= 1
         {
