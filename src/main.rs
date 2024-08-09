@@ -9,26 +9,21 @@ fn main() {
 
     println!("start");
 
-    let mut test_board = Board {
-        board: [[N, N, N], [N, N, N], [N, N, N]]
+    let mut board_1 = Board {
+        board: [[X, O, O], [X, O, X], [N, N, N]]
     };
 
-    let test_board2 = Board {
-        board: [[X, X, X], [N, N, N], [N, N, N]]
+    let mut board_2 = Board {
+        board: [[O, O, X], [O, X, X], [N, X, N]]
     };
 
-    test_board.print_board();
-    println!("Board is full: {}", test_board.is_board_full());
+    board_1.print_board();
+    let best_move1 = board_1.find_best_move(true);
+    println!("The best move for X on this board is: row - {}, column - {}", best_move1.0, best_move1.1);
 
-    test_board2.print_board();
-    println!("Board is full: {}", test_board2.is_board_full());
-
-    println!("Adding mark to empty board");
-    let boolean = test_board.add_mark(0, Mark::O);
-    println!("Mark was added succuessfully: {boolean}");
-    test_board.print_board();
-
-    println!("Test board 2 is valid: {}, eval: {}", test_board2.evaluate_board().0, test_board2.evaluate_board().1);
+    board_2.print_board();
+    let best_move2 = board_2.find_best_move(false);
+    println!("The best move for O on this board is: row - {}, column - {}", best_move2.0, best_move2.1);
 
     println!("end");
 }

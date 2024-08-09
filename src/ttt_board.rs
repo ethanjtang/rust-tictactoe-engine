@@ -1,4 +1,5 @@
-
+use std::cmp::max;
+use std::cmp::min;
 
 #[derive(Debug)]
 #[derive(PartialEq)]
@@ -17,17 +18,17 @@ pub struct Board
 impl Board {
     pub fn print_board(&self) 
     {
-        for i in 0..3
+        for row in 0..3
         {
-            for j in 0..3
+            for column in 0..3
             {
-                if j == 2
+                if column == 2
                 {
-                    print!("{:?}\n", self.board[i][j]);
+                    print!("{:?}\n", self.board[row][column]);
                 }
                 else
                 {
-                    print!("{:?} | ", self.board[i][j]);
+                    print!("{:?} | ", self.board[row][column]);
                 }
                 
             }    
@@ -37,11 +38,11 @@ impl Board {
     }
     pub fn is_board_full(&self) -> bool 
     {
-        for i in 0..3
+        for row in 0..3
         {
-            for j in 0..3
+            for column in 0..3
             {
-                if self.board[i][j] == Mark::N
+                if self.board[row][column] == Mark::N
                 {
                     return false;
                 }
@@ -51,17 +52,14 @@ impl Board {
         return true;
     }
 
-    pub fn add_mark(&mut self, pos: usize, mark: Mark) -> bool
+    pub fn add_mark(&mut self, row: usize, column: usize, mark: Mark) -> bool
     {
         let mut mark_added = false;
 
-        if pos >= 9
+        if row > 2 || row < 0 || column < 0 || column > 2
         {
             return false;
         }
-
-        let row = pos / 3;
-        let column = pos % 3;
         
         if self.board[row][column] == Mark::N
         {
@@ -72,7 +70,7 @@ impl Board {
         return mark_added;
     }
 
-    pub fn evaluate_board(&self) -> (bool, usize)
+    pub fn evaluate_board(&self) -> (bool, isize)
     {
         let mut valid_board = false;
         let mut num_scores = 0;
@@ -147,5 +145,112 @@ impl Board {
         }
 
         return (valid_board, eval);
-    }   
+    }  
+
+    pub fn minimax(&mut self, depth: usize, is_max: bool) -> isize
+    {
+        // We are assuming board is always valid
+        let score = self.evaluate_board().1;
+        let mut best_score = 0;
+
+        if score == 10 || score == -10
+        {
+            return score;
+        }
+
+        if self.is_board_full() == true
+        {
+            return 0;
+        }
+
+        if is_max
+        {
+            best_score = -1000;
+
+            for row in 0..3
+            {
+                for column in 0..3
+                {
+                    if self.board[row][column] == Mark::N
+                    {
+                        self.add_mark(row, column, Mark::X);
+                        best_score = max(best_score, self.minimax(depth+1, true));
+                        self.add_mark(row, column, Mark::N);
+                    }
+                }
+            }
+
+            return best_score;
+        }
+        else
+        {
+            best_score = 1000;
+
+            for row in 0..3
+            {
+                for column in 0..3
+                {
+                    if self.board[row][column] == Mark::N
+                    {
+                        self.add_mark(row, column, Mark::O);
+                        best_score = min(best_score, self.minimax(depth+1, false));
+                        self.add_mark(row, column, Mark::N);
+                    }
+                }
+            }
+
+            return best_score;
+        }
+    }
+
+    pub fn find_best_move(&mut self, is_max: bool) -> (usize, usize) // row, column
+    // assume max is the player
+    {
+        let mut best_score = 0;
+        let mut opt_row = 10;
+        let mut opt_column = 10;
+
+        if is_max
+        {
+            best_score = -1000;
+        }
+        else
+        {
+            best_score = 1000;
+        }
+
+        for row in 0..3
+        {
+            for column in 0..3
+            {
+                if (self.board[row][column] == Mark::N)
+                {
+                    if is_max
+                    {
+                        self.add_mark(row, column, Mark::X);
+                        let mut move_val = self.minimax(0, false);
+                        if move_val > best_score
+                        { 
+                            opt_row = row;
+                            opt_column = column;
+                            best_score = move_val;
+                        }
+                    }
+                    else
+                    {
+                        self.add_mark(row, column, Mark::O);
+                        let mut move_val = self.minimax(0, true);
+                        if move_val < best_score
+                        { 
+                            opt_row = row;
+                            opt_column = column;
+                            best_score = move_val;
+                        }
+                    }
+                }
+            }
+        }
+
+        return (opt_row, opt_column);
+    }
 }
